@@ -5,19 +5,38 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>HTML Converter</title>
 <style>
+  :root {
+    --bg-color: #f4f4f9;
+    --text-color: #333;
+    --btn-bg: #4CAF50;
+    --btn-hover: #45a049;
+    --textarea-bg: #fff;
+    --iframe-bg: #fff;
+  }
+
+  [data-theme='dark'] {
+    --bg-color: #1e1e1e;
+    --text-color: #f0f0f0;
+    --btn-bg: #6a5acd;
+    --btn-hover: #836fff;
+    --textarea-bg: #2e2e2e;
+    --iframe-bg: #2e2e2e;
+  }
+
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    background-color: #f4f4f9;
+    background-color: var(--bg-color);
+    color: var(--text-color);
     margin: 0;
     padding: 0;
     display: flex;
     flex-direction: column;
     align-items: center;
+    transition: background-color 0.3s, color 0.3s;
   }
 
   h1 {
     margin-top: 40px;
-    color: #333;
   }
 
   .container {
@@ -38,22 +57,25 @@
     border-radius: 8px;
     border: 1px solid #ccc;
     resize: vertical;
+    background-color: var(--textarea-bg);
+    color: var(--text-color);
+    transition: background-color 0.3s, color 0.3s;
   }
 
   button {
     width: 150px;
     padding: 10px;
     font-size: 16px;
-    background-color: #4CAF50;
+    background-color: var(--btn-bg);
     color: white;
     border: none;
     border-radius: 8px;
     cursor: pointer;
-    transition: 0.2s;
+    transition: background-color 0.3s;
   }
 
   button:hover {
-    background-color: #45a049;
+    background-color: var(--btn-hover);
   }
 
   iframe {
@@ -61,13 +83,30 @@
     height: 400px;
     border-radius: 8px;
     border: 1px solid #ccc;
-    background-color: white;
+    background-color: var(--iframe-bg);
+    transition: background-color 0.3s;
   }
 
   .footer {
     margin: 40px 0;
-    color: #666;
     font-size: 14px;
+  }
+
+  .theme-toggle {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px 15px;
+    background-color: var(--btn-bg);
+    color: white;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+
+  .theme-toggle:hover {
+    background-color: var(--btn-hover);
   }
 </style>
 </head>
@@ -80,16 +119,27 @@
   <iframe id="preview"></iframe>
 </div>
 
-<div class="footer">Type your HTML above and click Convert to see it below.</div>
+<div class="footer">Type your HTML above and click Convert to see it rendered below.</div>
+
+<button class="theme-toggle" id="themeToggle">Toggle Dark/Light</button>
 
 <script>
   const textarea = document.getElementById('htmlInput');
   const iframe = document.getElementById('preview');
   const button = document.getElementById('convertBtn');
+  const themeToggle = document.getElementById('themeToggle');
 
   button.addEventListener('click', () => {
     const content = textarea.value;
     iframe.srcdoc = content;
+  });
+
+  themeToggle.addEventListener('click', () => {
+    if (document.documentElement.getAttribute('data-theme') === 'dark') {
+      document.documentElement.setAttribute('data-theme', '');
+    } else {
+      document.documentElement.setAttribute('data-theme', 'dark');
+    }
   });
 </script>
 
